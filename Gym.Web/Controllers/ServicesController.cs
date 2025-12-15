@@ -2,7 +2,7 @@
 
 namespace Gym.Web.Controllers
 {
-    public class HomeController1 : Controller
+    public class ServicesController : Controller
     {
         public IActionResult Index()
         {
