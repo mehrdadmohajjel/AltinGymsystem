@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Transactions;
+
+namespace Gym.Domain.Entities
+{
+    public class Wallet : BaseEntity
+    {
+        public Guid UserId { get; set; }
+        public long Balance { get; set; }
+
+        public User User { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
+
+    }
+}
