@@ -33,8 +33,24 @@ if (string.IsNullOrEmpty(connectionString))
     }
 }
 builder.Services.AddDbContext<GymDbContext>(options =>
-    options.UseSqlServer(connectionString));
+{
+    options.UseSqlServer(connectionString,
+        sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+            sqlOptions.MigrationsAssembly("Gym.Infrastructure");
+        });
 
+    // برای محیط توسعه
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+    }
+});
 
 // -------------------- JWT Authentication --------------------
 builder.Services.AddAuthentication("Bearer")
