@@ -1,5 +1,5 @@
-﻿using Gym.Application.Notifications;
-using Gym.Domain.Events;
+﻿using Gym.Domain.Events;
+using Gym.Infrastructure.Notification;
 using Gym.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;

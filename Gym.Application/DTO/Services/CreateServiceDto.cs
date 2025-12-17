@@ -12,8 +12,7 @@ namespace Gym.Application.DTO.Services
         public string Title { get; set; }
         public ServiceType Type { get; set; }
         public long Price { get; set; }
-
-        public int? SessionCount { get; set; }
         public int? DurationDays { get; set; }
+
     }
 }

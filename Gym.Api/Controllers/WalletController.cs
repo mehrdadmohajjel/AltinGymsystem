@@ -8,7 +8,7 @@ namespace Gym.Api.Controllers
     [Authorize(Roles = "GymAdmin,Employee")]
     [ApiController]
     [Route("api/wallet")]
-    public class WalletController : ControllerBase
+    public class WalletController : BaseApiController
     {
         private readonly IWalletService _service;
 

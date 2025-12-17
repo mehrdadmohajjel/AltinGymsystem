@@ -1,5 +1,66 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Http
 @{
+    var role = Context.Session.GetString("role");
 }
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="/" class="brand-link">
+        <span class="brand-text">Gym Admin</span>
+    </a>
+
+    <div class="sidebar">
+        <nav>
+            <ul class="nav nav-pills nav-sidebar flex-column">
+
+                <li class="nav-item">
+                    <a href="/Dashboard" class="nav-link">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>داشبورد</p>
+                    </a>
+                </li>
+
+                @if (role == "GymAdmin")
+                {
+                    <li class="nav-item">
+                        <a href="/Users" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>کاربران</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/Services" class="nav-link">
+                            <i class="nav-icon fas fa-dumbbell"></i>
+                            <p>خدمات</p>
+                        </a>
+                    </li>
+                }
+
+                @if (role == "Customer")
+                {
+                    <li class="nav-item">
+                        <a href="/Customer/Dashboard" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <p>داشبورد من</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/Customer/Wallet" class="nav-link">
+                            <i class="fas fa-wallet"></i>
+                            <p>کیف پول</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/Customer/Services" class="nav-link">
+                            <i class="fas fa-dumbbell"></i>
+                            <p>سرویس‌ها</p>
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </nav>
+    </div>
+</aside>

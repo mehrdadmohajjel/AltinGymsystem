@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gym.Web.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class WalletController : Controller
     {
-        public IActionResult Index()
+        private readonly IHttpClientFactory _factory;
+
+        public WalletController(IHttpClientFactory factory)
         {
-            return View();
+            _factory = factory;
         }
+
+        public IActionResult Index() => View();
     }
 }

@@ -26,7 +26,7 @@ namespace Gym.Application.Services
         // 1️⃣ تعریف خدمت
         public async Task CreateAsync(CreateServiceDto dto, Guid tenantId)
         {
-            if (dto.Type == ServiceType.SessionBased && dto.SessionCount == null)
+            if (dto.Type == ServiceType.SessionBased )
                 throw new Exception("تعداد جلسات الزامی است");
 
             if (dto.Type == ServiceType.TimeBased && dto.DurationDays == null)
@@ -38,8 +38,7 @@ namespace Gym.Application.Services
                 Title = dto.Title,
                 Type = dto.Type,
                 Price = dto.Price,
-                SessionCount = dto.SessionCount,
-                DurationDays = dto.DurationDays
+                DurationDays = dto.DurationDays,
             });
 
             await _db.SaveChangesAsync();
@@ -83,32 +82,16 @@ namespace Gym.Application.Services
         {
             var userService = await _db.UserServices
                 .Include(x => x.Service)
-                .FirstAsync(x => x.Id == dto.UserServiceId);
+                .FirstOrDefaultAsync(x => x.Id == dto.UserServiceId)
+                ?? throw new Exception("سرویس کاربر یافت نشد");
 
-            if (!userService.IsActive)
-                throw new Exception("سرویس غیرفعال است");
+            if (userService.Service.Type != ServiceType.SessionBased)
+                throw new Exception("این سرویس جلسه‌ای نیست");
 
-            if (userService.Service.Type == ServiceType.SessionBased)
-            {
-                if (userService.RemainingSessions <= 0)
-                {
-                    userService.IsActive = false;
-                    throw new Exception("جلسه‌ای باقی نمانده");
-                }
+            if (userService.RemainingSessions <= 0)
+                throw new Exception("جلسه‌ای باقی نمانده");
 
-                userService.RemainingSessions--;
-
-                if (userService.RemainingSessions == 0)
-                    userService.IsActive = false;
-            }
-            else
-            {
-                if (userService.ExpireAt < DateTime.UtcNow)
-                {
-                    userService.IsActive = false;
-                    throw new Exception("سرویس منقضی شده است");
-                }
-            }
+            userService.RemainingSessions--;
 
             await _db.SaveChangesAsync();
         }

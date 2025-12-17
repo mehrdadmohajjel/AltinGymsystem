@@ -1,5 +1,7 @@
 ﻿using Gym.Application.DTO.Services;
 using Gym.Application.Services;
+using Gym.Domain.Entities;
+using Gym.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +11,7 @@ namespace Gym.Api.Controllers
     [Authorize(Roles = "GymAdmin")]
     [ApiController]
     [Route("api/services")]
-    public class ServicesController : ControllerBase
+    public class ServicesController : BaseApiController
     {
         private readonly IServiceService _service;
 
@@ -19,10 +21,23 @@ namespace Gym.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "GymAdmin")]
         public async Task<IActionResult> Create(CreateServiceDto dto)
         {
-            var tenantId = Guid.Parse(User.FindFirst("tenantId")!.Value);
-            await _service.CreateAsync(dto, tenantId);
+            if (dto.Type == ServiceType.TimeBased && dto.DurationDays == null)
+                return BadRequest("مدت زمان برای سرویس زمانی الزامی است");
+
+            var service = new Service
+            {
+                Title = dto.Title,
+                Type = dto.Type,
+                Price = dto.Price,
+                DurationDays = dto.DurationDays,
+                TenantId = CurrentTenantId
+            };
+
+            await _service.CreateAsync(dto, CurrentTenantId);
+
             return Ok();
         }
 

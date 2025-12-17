@@ -21,7 +21,7 @@ namespace Gym.Application.Security
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim("tenantId", user.TenantId.ToString()),
+                new Claim("tenant_id", user.TenantId.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString()),
                 new Claim("nationalCode", user.NationalCode)
             };

@@ -17,6 +17,10 @@ namespace Gym.Domain.Entities
         // SMS
         public string KavenegarApiKey { get; set; }
         public long LowBalanceThreshold { get; set; }
+        public long MellatTerminalId { get; set; }
+        public string MellatUserName { get; set; }
+        public string MellatUserPassword { get; set; }
+
 
         public Tenant Tenant { get; set; }
     }

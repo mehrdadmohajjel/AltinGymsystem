@@ -4,9 +4,8 @@ namespace Gym.Web.Controllers
 {
     public class ServicesController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
+        public IActionResult Create() => View();
+
     }
 }
